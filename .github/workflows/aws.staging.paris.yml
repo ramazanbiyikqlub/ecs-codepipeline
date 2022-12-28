@@ -12,7 +12,7 @@ env:
   AWS_REGION: "eu-west-3"
   ECR_REPOSITORY: "nodejs-apps"
   ECS_SERVICE: "nodejs-service"
-  ECS_CLUSTER: "ramazan-test"
+  ECS_CLUSTER: "ramazan-test-1"
   ECS_TASK_DEFINITION: ".aws/task-definition.staging.paris.json"
   CONTAINER_NAME: "nodejs-test"
 
