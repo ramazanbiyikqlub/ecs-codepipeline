@@ -1,0 +1,2 @@
+aws ecs register-task-definition --cli-input-json .aws/task-definition.staging.paris.json
+aws ecs create-service --cluster ramazan-test --service-name nginx-service --task-definition nginx-sample-stack:1 --desired-count 1
