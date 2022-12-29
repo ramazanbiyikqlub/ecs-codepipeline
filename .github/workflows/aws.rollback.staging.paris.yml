@@ -8,6 +8,7 @@ env:
   ECS_CLUSTER: "ramazan-test-1"
   ECS_TASK_DEFINITION: ".aws/task-definition.staging.paris.json"
   CONTAINER_NAME: "nodejs-test"
+  
 
 jobs:
   Rollback:
@@ -45,7 +46,7 @@ jobs:
       - name: Rollback to previous version
         id: rollback
         run: |
-          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.nodejs-service }} --task-definition ${{ env.REVISION_NAME }}:${{ env.PREVIOUS_REVISION_NUMBER }}
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.REVISION_NAME }}:${{ env.PREVIOUS_REVISION_NUMBER }}
 
       # - name: Deploy Amazon ECS task definition
       #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
