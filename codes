@@ -4,3 +4,8 @@ aws ecs list-task-definitions --family-prefix "nodejs-apps" --query taskDefiniti
 export task_arn=$(aws ecs list-task-definitions --output json --family-prefix "staging-pos-worker-iiko" --query 'taskDefinitionArns[0]' --sort DESC | tr -d '"')
 aws ecs update-service --cluster "core-edge-staging" --service "pos-worker-iiko" --task-definition 
 aws ecs describe-task-definition --task-definition "staging-pos-worker-iiko"
+aws ecs describe-services --cluster 'ramazan-test-1' --services nodejs-service
+# Get current service task definition
+aws ecs describe-services --cluster 'ramazan-test-1' --query "services[].taskDefinition" --services nodejs-service --output text | sed -e "s/\d+$//g" --> Task revision id icin
+                                                                                                                                  # sed  's/.*\://' bu komut calisiyor yukaridakinde extra is gerekiyor
+# arn:aws:ecs:eu-west-3:132248825767:task-definition/nodejs-1:7
