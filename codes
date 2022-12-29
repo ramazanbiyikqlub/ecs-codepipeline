@@ -1,6 +1,6 @@
 aws ecs register-task-definition --cli-input-json .aws/task-definition.staging.paris.json
 aws ecs create-service --cluster ramazan-test --service-name nginx-service --task-definition nginx-sample-stack:1 --desired-count 1
-aws ecs list-task-definitions --family-prefix "staging-pos-worker-iiko" --query taskDefinitionArns --sort DESC
+aws ecs list-task-definitions --family-prefix "nodejs-apps" --query taskDefinitionArns --sort DESC
 export task_arn=$(aws ecs list-task-definitions --output json --family-prefix "staging-pos-worker-iiko" --query 'taskDefinitionArns[0]' --sort DESC | tr -d '"')
 aws ecs update-service --cluster "core-edge-staging" --service "pos-worker-iiko" --task-definition 
 aws ecs describe-task-definition --task-definition "staging-pos-worker-iiko"
