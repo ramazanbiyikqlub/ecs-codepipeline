@@ -45,7 +45,7 @@ jobs:
           echo ${{ env.REVISION_NAME }}
 
       - name: Check if image is exist or not
-        id: tag_checker
+        id: tag-checker
         run: |
           if (aws ecr describe-images --repository-name=${{ env.ECR_REPOSITORY }} --image-ids=imageTag=${{ env.IMAGE_TAG }} &> /dev/null); then
             echo 'Image Found'
