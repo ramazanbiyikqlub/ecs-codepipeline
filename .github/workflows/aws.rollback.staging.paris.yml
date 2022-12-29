@@ -32,7 +32,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ steps.date.outputs.date }}-${{ steps.vars.outputs.sha_short }}
         run: |
-          echo ::set-env name=REVISION_NUMBER::$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | sed -e 's/.*\://')
+          echo  "REVISION_NUMBER=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | sed -e 's/.*\://')" >> $GITHUB_ENV
           echo ${{ env.REVISION_NUMBER }}
       # - name: Checkout PoS Adapter
       #   uses: actions/checkout@v2
