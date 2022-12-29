@@ -35,6 +35,7 @@ jobs:
         run: |
           echo "REVISION_NUMBER=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | cut -d: -f7)" >> $GITHUB_ENV
           echo "REVISION_NAME=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | cut -d: -f1-6)" >> $GITHUB_ENV
+          echo "IMAGE_TAG"=$(aws ecs describe-task-definition --task-definition "nodejs-1" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2)
       - name: Print Next Task Revision
         id: next-revision
         run: |
@@ -43,10 +44,20 @@ jobs:
           echo $((${{ env.REVISION_NUMBER }}-1))
           echo ${{ env.REVISION_NAME }}
 
-      - name: Rollback to previous version
-        id: rollback
+      - name: Check if image is exist or not
+        id: next-revision
         run: |
-          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.REVISION_NAME }}:${{ env.PREVIOUS_REVISION_NUMBER }}
+          if (aws ecr describe-images --repository-name=${{ env.ECR_REPOSITORY }} --image-ids=imageTag=${{ env.IMAGE_TAG }} &> /dev/null); then
+            echo 'Image Found'
+          else
+            echo 'Image is Not Found'
+            core.setFailed('Image is Not Found');
+          fi
+
+      # - name: Rollback to previous version
+      #   id: rollback
+      #   run: |
+      #     aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.REVISION_NAME }}:${{ env.PREVIOUS_REVISION_NUMBER }}
 
       # - name: Deploy Amazon ECS task definition
       #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1

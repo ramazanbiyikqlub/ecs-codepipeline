@@ -7,5 +7,21 @@ aws ecs describe-task-definition --task-definition "staging-pos-worker-iiko"
 aws ecs describe-services --cluster 'ramazan-test-1' --services nodejs-service
 # Get current service task definition
 aws ecs describe-services --cluster 'ramazan-test-1' --query "services[].taskDefinition" --services nodejs-service --output text | sed -e "s/\d+$//g" --> Task revision id icin
-                                                                                                                                  # sed  's/.*\://' bu komut calisiyor yukaridakinde extra is gerekiyor
+aws ecs describe-task-definition --task-definition "nodejs-1" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2
+aws ecr describe-images --repository-name=nodejs-1 --query "imageDetails[0].imageTags[]" --output text
+
 # arn:aws:ecs:eu-west-3:132248825767:task-definition/nodejs-1:7
+
+case $(aws ecs describe-task-definition --task-definition "nodejs-1" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2) in $(aws ecr describe-images --repository-name=nodejs-1 --query "imageDetails[0].imageTags[]" --output text))) echo "hello" ;;esac
+
+if [ $(aws ecr describe-images --repository-name=nodejs-1 --image-ids=imageTag=20221229-ee7c)] ;
+    then 
+        echo "Found" 
+fi
+
+if (aws ecr describe-images --repository-name=nodejs-1 --image-ids=imageTag=20221229-ee7c &> /dev/null); then
+    echo 'Image Found'
+else
+    echo 'Image is Not Found'
+    core.setFailed('Image is Not Found');
+fi
