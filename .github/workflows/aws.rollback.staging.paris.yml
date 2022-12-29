@@ -41,13 +41,10 @@ jobs:
           echo $((${{ env.REVISION_NUMBER }}-1))
           echo ${{ env.REVISION_NAME }}
 
-      # - name: Fill in the new image in the Amazon ECS task definition
-      #   id: task-def
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: ${{ env.ECS_TASK_DEFINITION }}
-      #     container-name: ${{ env.CONTAINER_NAME }}
-      #     image: ${{ steps.build-image.outputs.image }}
+      - name: Rollback to previous version
+        id: rollback
+        run: |
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.nodejs-service }} --task-definition ${{ env.REVISION_NAME }}:$((${{ env.REVISION_NUMBER }}-1))
 
       # - name: Deploy Amazon ECS task definition
       #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
