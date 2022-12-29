@@ -32,9 +32,10 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ steps.date.outputs.date }}-${{ steps.vars.outputs.sha_short }}
         run: |
-          echo  "REVISION_NUMBER=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | sed -e 's/.*\://')" >> $GITHUB_ENV
-          echo $((${{ env.REVISION_NUMBER }} - 1))
-      # - name: Checkout PoS Adapter
+          echo "REVISION_NUMBER=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | sed -e 's/.*\://')" >> $GITHUB_ENV
+          revision_number_int=${{ env.REVISION_NUMBER }}
+          echo $(($revision_number_int-1))
+      # - name: Checkout PoS Adapter  
       #   uses: actions/checkout@v2
 
       # - name: Fill in the new image in the Amazon ECS task definition
