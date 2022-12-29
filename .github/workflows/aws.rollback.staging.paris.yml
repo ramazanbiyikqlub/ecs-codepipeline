@@ -1,5 +1,6 @@
 name: AWS Rollback
-
+on:
+  workflow_dispatch:
 env:
   AWS_REGION: "eu-west-3"
   ECR_REPOSITORY: "nodejs-1"
