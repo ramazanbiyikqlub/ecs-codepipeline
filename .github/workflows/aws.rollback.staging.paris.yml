@@ -49,10 +49,9 @@ jobs:
         id: tag-checker
         run: |
           if (aws ecr describe-images --repository-name=${{ env.ECR_REPOSITORY }} --image-ids=imageTag=${{ env.IMAGE_TAG }} &> /dev/null); then
-            echo 'Image Found'
+            echo "Image Found"
           else
             echo 'Image is Not Found'
-            core.setFailed('Image is Not Found');
           fi
 
       # - name: Rollback to previous version
