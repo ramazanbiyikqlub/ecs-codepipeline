@@ -33,8 +33,11 @@ jobs:
           IMAGE_TAG: ${{ steps.date.outputs.date }}-${{ steps.vars.outputs.sha_short }}
         run: |
           echo "REVISION_NUMBER=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | sed -e 's/.*\://')" >> $GITHUB_ENV
-          revision_number_int=${{ env.REVISION_NUMBER }}
-          echo $(($revision_number_int-1))
+      - name: Print Next Task Revision
+        id: next-revision
+        run: |
+          echo "${{ env.REVISION_NUMBER }}"
+          echo $((${{ env.REVISION_NUMBER }}-1))
       # - name: Checkout PoS Adapter  
       #   uses: actions/checkout@v2
 
