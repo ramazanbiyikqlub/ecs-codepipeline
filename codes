@@ -19,7 +19,7 @@ if [ $(aws ecr describe-images --repository-name=nodejs-1 --image-ids=imageTag=2
         echo "Found" 
 fi
 
-if (aws ecr describe-images --repository-name=nodejs-1 --image-ids=imageTag=20221229-ee7c &> /dev/null); then
+if (aws ecr describe-images --repository-name=nodejs-1: --image-ids=imageTag=20221229-ee7c &> /dev/null); then
     echo 'Image Found'
 else
     echo 'Image is Not Found'
