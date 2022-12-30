@@ -34,17 +34,17 @@ jobs:
           IMAGE_TAG: ${{ steps.date.outputs.date }}-${{ steps.vars.outputs.sha_short }}
         run: |
           echo "REVISION_NUMBER=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | cut -d: -f7)" >> $GITHUB_ENV
+          echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
           echo "REVISION_NAME=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | cut -d: -f1-6)" >> $GITHUB_ENV
           echo "IMAGE_TAG"=$(aws ecs describe-task-definition --task-definition "nodejs-1:${{ env.PREVIOUS_REVISION_NUMBER }}" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2) >> $GITHUB_ENV
-      - name: Print Next Task Revision
+      - name: Print all env infoes
         id: next-revision
         run: |
-          echo "${{ env.REVISION_NUMBER }}"
-          echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
-          echo $((${{ env.REVISION_NUMBER }}-1))
-          echo ${{ env.REVISION_NAME }}
-          echo ${{ env.IMAGE_TAG }}
-          
+          echo "Current revision: ${{ env.REVISION_NUMBER }}"
+          echo "Next revision: $((${{ env.REVISION_NUMBER }}-1))"
+          echo "Revision name: ${{ env.REVISION_NAME }}"
+          echo "Previous revision Image Tag: ${{ env.IMAGE_TAG }}"
+
       - name: Check if previous task revision exist or not
         id: definition-checker
         run: |
