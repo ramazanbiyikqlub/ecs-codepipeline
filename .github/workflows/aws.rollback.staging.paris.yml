@@ -40,7 +40,7 @@
             id: previous-revision-number
             run: |
               echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
-
+          - uses: actions/checkout@v2
           - name: Check Variables with script
             uses: actions/checkout@v2
             id: check-variables
