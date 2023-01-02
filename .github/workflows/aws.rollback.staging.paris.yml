@@ -53,7 +53,7 @@
                ls -al
                chmod +x ./.github/workflows/check-variables.sh
                ./.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
-               echo "From github action: ${{ env.PREVIOUS_REVISION_NUMBER }}"
+               echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
             shell: bash
 
           # - name: Set Previous Task Revision Image Tag

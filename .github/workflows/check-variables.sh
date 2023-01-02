@@ -30,4 +30,4 @@ while "$is_exist_imagetag"; do
 done
 
 echo "New revision number: $new_revision_number"
-echo "PREVIOUS_REVISION_NUMBER"=$new_revision_number >> $GITHUB_ENV
+echo "NEW_PREVIOUS_REVISION_NUMBER"=$new_revision_number >> $GITHUB_ENV
