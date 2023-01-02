@@ -31,3 +31,4 @@ done
 
 echo "New revision number: $new_revision_number"
 echo "NEW_PREVIOUS_REVISION_NUMBER"=$new_revision_number >> $GITHUB_ENV
+echo $GITHUB_ENV

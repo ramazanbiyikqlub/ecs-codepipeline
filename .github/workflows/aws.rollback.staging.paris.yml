@@ -53,7 +53,6 @@
                ls -al
                chmod +x ./.github/workflows/check-variables.sh
                ./.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
-               echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
             shell: bash
 
           # - name: Set Previous Task Revision Image Tag
@@ -88,6 +87,7 @@
           - name: Rollback to previous version
             id: rollback
             run: |
+              echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
               echo 'rickrolled'
           #     aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.REVISION_NAME }}:${{ env.PREVIOUS_REVISION_NUMBER }}
 
