@@ -78,8 +78,9 @@
         name: Rollback
         runs-on: ubuntu-latest
         steps:
-          # - name: Rollback to previous version
-          #   id: rollback
-          #   run: |
+          - name: Rollback to previous version
+            id: rollback
+            run: |
+              echo 'rickrolled'
           #     aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.REVISION_NAME }}:${{ env.PREVIOUS_REVISION_NUMBER }}
 
