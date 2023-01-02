@@ -16,14 +16,14 @@ while "$is_exist_imagetag"; do
 				is_exist_definition=false
 				is_exist_imagetag=false
 			else
-				echo 'TASK DEFINITION IS NOT FOUND'
+				echo 'TASK DEFINITION IS NOT FOUND. Checking previous revision...'
 				new_revision_number=$(( $new_revision_number - 1 ))
 			fi
 		done
 
 		is_exist_imagetag=false
 	else
-		echo 'Image is Not Found on ECR'
+		echo 'Image is Not Found on ECR. Checking previous revision...'
 		new_revision_number=$(( $new_revision_number - 1 ))
 	fi
 done
