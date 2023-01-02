@@ -36,10 +36,10 @@
               echo "REVISION_NUMBER=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | cut -d: -f7)" >> $GITHUB_ENV
               echo "REVISION_NAME=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | cut -d: -f1-6)" >> $GITHUB_ENV
     
-          # - name: Set Previous Task Revision Number
-          #   id: previous-revision-number
-          #   run: |
-          #     echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
+          - name: Set Previous Task Revision Number
+            id: previous-revision-number
+            run: |
+              echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
 
           - name: Checkout The Repo
             uses: actions/checkout@v2
@@ -47,10 +47,8 @@
           - name: Check Variables with script
             id: check-variables
             env:
-              PREVIOUS_REVISION_NUMBER: "10"
+              PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
             run: |
-               pwd
-               ls -al
                chmod +x ./.github/workflows/check-variables.sh
                ./.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
             shell: bash
