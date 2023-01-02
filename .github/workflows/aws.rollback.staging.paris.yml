@@ -42,10 +42,12 @@
               echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
 
           - name: Check Variables with script
+            uses: actions/checkout@v2
             id: check-variables
             env:
               PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
             run: |
+               pwd
                chmod +x check-variables.sh
                check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
             shell: bash
