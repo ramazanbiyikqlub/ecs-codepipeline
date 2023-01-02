@@ -12,7 +12,7 @@
     
     jobs:
       Set-variables:
-        name: "set"
+        name: "Rollback"
         runs-on: ubuntu-latest
         environment: production
         steps:
@@ -40,35 +40,42 @@
             id: previous-revision-number
             run: |
               echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
-    
-          - name: Set Previous Task Revision Image Tag
-            id: previous-revision-image-tag
-            env:
-              PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
-            run: |
-              echo "IMAGE_TAG"=$(aws ecs describe-task-definition --task-definition "${{ env.ECR_REPOSITORY }}:$PREVIOUS_REVISION_NUMBER" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2) >> $GITHUB_ENV
 
-          - name: Check if previous revision image is exist or not
-            id: tag-checker
-            env:
-              IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          - name: Check Variables with script
+            id: check-variables.
             run: |
-              if (aws ecr describe-images --repository-name=${{ env.ECR_REPOSITORY }} --image-ids=imageTag=$IMAGE_TAG &> /dev/null); then
-                echo "Image Found"
-              else
-                echo 'Image is Not Found'
-              fi
+               chmod +x ./.github/workflows/check-variables.sh
+               ./.github/workflows/check-variables.sh
+            shell: bash
+
+          # - name: Set Previous Task Revision Image Tag
+          #   id: previous-revision-image-tag
+          #   env:
+          #     PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
+          #   run: |
+          #     echo "IMAGE_TAG"=$(aws ecs describe-task-definition --task-definition "${{ env.ECR_REPOSITORY }}:$PREVIOUS_REVISION_NUMBER" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2) >> $GITHUB_ENV
+
+          # - name: Check if previous revision image is exist or not
+          #   id: tag-checker
+          #   env:
+          #     IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          #   run: |
+          #     if (aws ecr describe-images --repository-name=${{ env.ECR_REPOSITORY }} --image-ids=imageTag=$IMAGE_TAG &> /dev/null); then
+          #       echo "Image Found"
+          #     else
+          #       echo 'Image is Not Found'
+          #     fi
               
-          - name: Check if previous task revision exist or not
-            id: revision-checker
-            env:
-              PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
-            run: |
-              if (aws ecs describe-task-definition --task-definition "${{ env.ECR_REPOSITORY }}:$PREVIOUS_REVISION_NUMBER" --output text &> /dev/null); then
-                echo "Task definition Found"
-              else
-                echo 'Task definition not Found'
-              fi
+          # - name: Check if previous task revision exist or not
+          #   id: revision-checker
+          #   env:
+          #     PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
+          #   run: |
+          #     if (aws ecs describe-task-definition --task-definition "${{ env.ECR_REPOSITORY }}:$PREVIOUS_REVISION_NUMBER" --output text &> /dev/null); then
+          #       echo "Task definition Found"
+          #     else
+          #       echo 'Task definition not Found'
+          #     fi
 
           - name: Rollback to previous version
             id: rollback
