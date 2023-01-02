@@ -5,6 +5,7 @@ is_exist_imagetag=true
 is_exist_definition=true
 # Check if Image Exist or not
 while "$is_exist_imagetag"; do 
+	echo "Checking $new_revision_number . revision"
 	IMAGE_TAG=$(aws ecs describe-task-definition --task-definition "$1":"$new_revision_number" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2)
 	if (aws ecr describe-images --repository-name=$1 --image-ids=imageTag="$IMAGE_TAG"&> /dev/null); then
 		echo "IMAGE FOUND"
