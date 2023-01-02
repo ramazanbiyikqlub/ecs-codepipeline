@@ -51,8 +51,8 @@
             run: |
                pwd
                ls -al
-               chmod +x ${GITHUB_WORKSPACE}/.github/workflows/check-variables.sh
-               ./${GITHUB_WORKSPACE}/.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
+               chmod +x ./.github/workflows/check-variables.sh
+               ./.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
                echo "From github action: ${{ env.PREVIOUS_REVISION_NUMBER }}"
             shell: bash
 
