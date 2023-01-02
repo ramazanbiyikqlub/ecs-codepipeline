@@ -52,7 +52,7 @@
                pwd
                ls -al
                chmod +x ./.github/workflows/check-variables.sh
-               ./.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
+               ./.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} 10
                echo "From github action: ${{ env.PREVIOUS_REVISION_NUMBER }}"
             shell: bash
 
