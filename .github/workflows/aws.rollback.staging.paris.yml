@@ -82,7 +82,7 @@
           #       echo 'Task definition not Found'
           #     fi
 
-          
+
           # NEW_PREVIOUS_REVISION_NUMBER variables comes from check-variables.sh script file.
           - name: Rollback to previous version
             id: rollback
@@ -90,5 +90,5 @@
           
               echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
               echo 'rickrolled'
-          #     aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.REVISION_NAME }}:${{ env.PREVIOUS_REVISION_NUMBER }}
+              aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.REVISION_NAME }}:${{ env.NEW_PREVIOUS_REVISION_NUMBER }}
 
