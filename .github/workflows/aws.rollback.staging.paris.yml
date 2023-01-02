@@ -40,7 +40,7 @@
             id: previous-revision-number
             run: |
               echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
-          - uses: actions/checkout@v2
+
           - name: Check Variables with script
             uses: actions/checkout@v2
             id: check-variables
@@ -48,8 +48,9 @@
               PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
             run: |
                pwd
-               chmod +x check-variables.sh
-               check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
+               chmod +x ${GITHUB_WORKSPACE}/.github/workflows/check-variables.sh
+               ./${GITHUB_WORKSPACE}/.github/workflows/check-variables.shcheck-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
+               echo "From github action: ${{ env.PREVIOUS_REVISION_NUMBER }}"
             shell: bash
 
           # - name: Set Previous Task Revision Image Tag
