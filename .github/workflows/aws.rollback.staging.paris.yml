@@ -11,8 +11,8 @@
       
     
     jobs:
-      Rollback:
-        name: "Rollback"
+      Set-variables:
+        name: "set"
         runs-on: ubuntu-latest
         environment: production
         steps:
@@ -46,8 +46,12 @@
             env:
               PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
             run: |
-              echo "IMAGE_TAG"=$(aws ecs describe-task-definition --task-definition "${{ env.ECR_REPOSITORY }}:10" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2) >> $GITHUB_ENV
-    
+              echo "IMAGE_TAG"=$(aws ecs describe-task-definition --task-definition "${{ env.ECR_REPOSITORY }}:$PREVIOUS_REVISION_NUMBER" --query "taskDefinition.containerDefinitions[0].image" --output text |cut -d: -f2) >> $GITHUB_ENV
+      Check-variables:
+        needs: Set-variables
+        name: check
+        runs-on: ubuntu-latest
+        steps:
           - name: Check if previous revision image is exist or not
             id: tag-checker
             env:
@@ -69,7 +73,11 @@
               else
                 echo 'Task definition not Found'
               fi
-    
+      Rollback:
+        needs: Check-variables
+        name: Rollback
+        runs-on: ubuntu-latest
+        steps:
           # - name: Rollback to previous version
           #   id: rollback
           #   run: |
