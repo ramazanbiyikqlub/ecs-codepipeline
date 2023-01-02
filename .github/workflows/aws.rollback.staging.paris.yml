@@ -46,8 +46,8 @@
             env:
               PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
             run: |
-               chmod +x ./.github/workflows/check-variables.sh
-               ./.github/workflows/check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
+               chmod +x check-variables.sh
+               check-variables.sh ${{ env.ECR_REPOSITORY }} $PREVIOUS_REVISION_NUMBER
             shell: bash
 
           # - name: Set Previous Task Revision Image Tag
