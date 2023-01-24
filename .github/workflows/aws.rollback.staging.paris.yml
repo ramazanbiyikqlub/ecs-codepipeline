@@ -42,9 +42,9 @@ jobs:
           echo "REVISION_NAME=$(aws ecs describe-services --cluster ${{ env.ECS_CLUSTER }} --query "services[].taskDefinition" --services ${{ env.ECS_SERVICE }} --output text | cut -d: -f1-6)" >> $GITHUB_ENV
       
       # If revision number picked manually.
-      - name: Rollback to previous version
+      - name: Rollback to certion revision
         if: ${{ github.event.inputs.worker_go_ref != 'latest-1' }}
-        id: rollback to certion revision
+        id: rollback-certion-rev
         run: |
           echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
           echo 'rickrolled'
@@ -73,7 +73,7 @@ jobs:
 
       # NEW_PREVIOUS_REVISION_NUMBER variables comes from check-variables.sh script file.
       - name: Rollback to previous version
-        id: rollback tp previous
+        id: rollback-to-previous
         if: ${{ github.event.inputs.worker_go_ref == 'latest-1' }}
         run: |
           echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
