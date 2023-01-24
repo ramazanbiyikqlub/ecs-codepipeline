@@ -43,7 +43,7 @@ jobs:
       
       # If revision number picked manually.
       - name: Rollback to previous version
-        if: ${{ ${{ github.event.inputs.worker_go_ref }} != 'latest-1' }}
+        if: ${{ github.event.inputs.worker_go_ref != 'latest-1' }}
         id: rollback
         run: |
           echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
@@ -53,17 +53,17 @@ jobs:
       # If revision number is latest-1  Run below   
       - name: Set Previous Task Revision Number
         id: previous-revision-number
-        if: ${{ ${{ github.event.inputs.worker_go_ref }} == 'latest-1' }}
+        if: ${{ github.event.inputs.worker_go_ref  == 'latest-1' }}
         run: |
           echo "PREVIOUS_REVISION_NUMBER"=$((${{ env.REVISION_NUMBER }}-1)) >> $GITHUB_ENV
 
       - name: Checkout The Repo
         uses: actions/checkout@v2
-        if: ${{ ${{ github.event.inputs.worker_go_ref }} == 'latest-1' }}
+        if: ${{ github.event.inputs.worker_go_ref == 'latest-1' }}
 
       - name: Check Variables with script
         id: check-variables
-        if: ${{ ${{ github.event.inputs.worker_go_ref }} == 'latest-1' }}
+        if: ${{ github.event.inputs.worker_go_ref == 'latest-1' }}
         env:
           PREVIOUS_REVISION_NUMBER: ${{ env.PREVIOUS_REVISION_NUMBER }}
         run: |
@@ -74,7 +74,7 @@ jobs:
       # NEW_PREVIOUS_REVISION_NUMBER variables comes from check-variables.sh script file.
       - name: Rollback to previous version
         id: rollback
-        if: ${{ ${{ github.event.inputs.worker_go_ref }} == 'latest-1' }}
+        if: ${{ github.event.inputs.worker_go_ref == 'latest-1' }}
         run: |
           echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
           echo 'rickrolled'
