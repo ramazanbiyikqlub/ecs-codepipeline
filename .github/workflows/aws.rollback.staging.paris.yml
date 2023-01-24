@@ -44,7 +44,7 @@ jobs:
       # If revision number picked manually.
       - name: Rollback to previous version
         if: ${{ github.event.inputs.worker_go_ref != 'latest-1' }}
-        id: rollback
+        id: rollback to ${{ github.event.inputs.worker_go_ref }}
         run: |
           echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
           echo 'rickrolled'
@@ -73,7 +73,7 @@ jobs:
 
       # NEW_PREVIOUS_REVISION_NUMBER variables comes from check-variables.sh script file.
       - name: Rollback to previous version
-        id: rollback
+        id: rollback tp previous
         if: ${{ github.event.inputs.worker_go_ref == 'latest-1' }}
         run: |
           echo "From github action: ${{ env.NEW_PREVIOUS_REVISION_NUMBER }}"
