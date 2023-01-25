@@ -30,7 +30,7 @@ jobs:
     environment: production
     steps:
       - name: Send greeting
-        run: echo "${{ github.event.inputs.environment }}
+        run: echo "${{ github.event.inputs.environment }}"
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v1-node16
       #   with:
