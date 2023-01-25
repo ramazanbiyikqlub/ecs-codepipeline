@@ -9,7 +9,11 @@ on:
       environment:
         description: 'Environment, Default: production'
         required: true
-        default: 'latest-1'
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
 env:
   AWS_REGION: "eu-west-3"
   ECR_REPOSITORY: "nodejs-1"
